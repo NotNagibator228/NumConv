@@ -14,7 +14,7 @@ class db:
 
 class uncov_alphabet:
 	def __init__(self, line : str):
-		self.line = tuple([ db(line[i], i) for i in range(len(line)) ])
+		self.line = [ db(line[i], i) for i in range(len(line)) ]
 		sorted(self.line, key=lambda x: x.char)
 
 	def find(self, char : str):
