@@ -37,9 +37,9 @@ index : int
 length = 10
 argb = [ False for _ in range(0, 5) ]
 argo = (
-	'version',
-	'about',
-	'help'
+	'NumConv v0.1',
+	'by A. S. Zaykov',
+	"NumConv n1 number n2\nargument's\n-v --version\tVersion\n-a --about\tAbout\n-h --help\tHelp\n-d --default\tDefault alphabet\n-l --line\tAlphabet arg's\n-f --file\tAlphabet in file + key"
 )
 
 def error_args(line : str, exit_code : int):
@@ -195,7 +195,7 @@ def main():
 		if len(alph) == 1: line[1] = line[0]
 	else: line[0], line[1] = default_alphabet, default_alphabet
 
-	num = [ 0, 0]
+	num = [ 0, 0 ]
 	num[0], num[1] = int(argv[index]), int(argv[index + 2])
 	for i in range(0, 2):
 		if num[i] < 2 or num[i] > len(line[i]):
