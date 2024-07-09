@@ -35,11 +35,11 @@ default_alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 alph = []
 index : int
 length = 10
-argb = [ False for _ in range(0, 5) ]
+argb = [ False for _ in range(0, 9) ]
 argo = (
-	'NumConv v0.1',
+	'NumConv v1.0',
 	'by A. S. Zaykov',
-	"NumConv n1 number n2\nargument's\n-v --version\tVersion\n-a --about\tAbout\n-h --help\tHelp\n-d --default\tDefault alphabet\n-l --line\tAlphabet arg's\n-f --file\tAlphabet in file + key"
+	"NumConv n1 number n2\nargument's\n-v --version\t\t\tVersion\n-a --about\t\t\tAbout\n-h --help\t\t\tHelp\n-d --default\t\t\tDefault alphabet\n-l --line\t\t\tAlphabet arg's\n-f --file\t\t\tAlphabet in file + key\n-l --length\t\t\tLength of fraction\n-n -N -numbers(one\\two)\t\tAdd numbers to alphabet\n-u -U --underlining(one\\two)\tAdd underlining to alphabet"
 )
 
 def error_args(line : str, exit_code : int):
@@ -84,9 +84,8 @@ def load_file(path : str, key : str):
 
 def test_line(line : str):
 	if len(line) < 2: error_args('alphabet < 2', 142)
-	test_set = set(line)
-	if len(test_set) != len(line): error_args('error alphabet', 140)
-	if ',' in test_set: error_args(', in alphabet', 141)
+	if len(set(line)) != len(line): error_args('error alphabet', 140)
+	if ',' in line: error_args(', in alphabet', 141)
 
 def args_length(index : int):
 	global length
@@ -112,7 +111,7 @@ def uncov_number(line : str, alphabet : str):
 	if max != len(line): num1 = uncov_number0(line[max + 1:], alphi)
 	return num0, num1
 
-def conv_number(num0, num1, notation, line : str, n2 : int):
+def conv_number(num0 : int, num1 : int, notation : int, line : str, n2 : int):
 	buffer = ''
 	#хз почему сдесь глючит с len(line) приходится использовать n2
 	while True:
@@ -155,6 +154,10 @@ def main():
 					case 'file': i = i + file_args(i + 1)
 					case 'default': alph.append((0, 0, 0))
 					case 'length': i = i + args_length(i + 1)
+					case 'numbersone': argb[5] = True
+					case 'numberstwo': argb[7] = True
+					case 'underliningone': argb[6] = True
+					case 'underliningtwo': argb[8] = True
 					case _: error_args('no argumnet: ' + argv[i][2:], 101)
 			else:
 				b = 0
@@ -167,6 +170,10 @@ def main():
 						case 'f': b = b + file_args(i + b + 1)
 						case 'd': alph.append((0, 0, 0))
 						case 'L': b = b + args_length(i + b + 1)
+						case 'n': argb[5] = True
+						case 'N': argb[7] = True
+						case 'u': argb[6] = True
+						case 'U': argb[8] = True
 						case _: error_args('no key: ' + element, 102)
 				i = i + b
 		elif (len(argv) - 2) > 0:
@@ -191,6 +198,8 @@ def main():
 				case 0: line[i] = default_alphabet
 				case 1: line[i] = argv[alph[i][1]]
 				case 2: line[i] = load_file(argv[alph[i][1]], argv[alph[i][1] + 1][alph[i][2]])
+			if argb[5 + (i * 2)]: line[i] = '0123456789' + line[i]
+			if argb[6 + (i * 2)]: line[i] = '_' + line[i]
 			test_line(line[i])
 		if len(alph) == 1: line[1] = line[0]
 	else: line[0], line[1] = default_alphabet, default_alphabet
