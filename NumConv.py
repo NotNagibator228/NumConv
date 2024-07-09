@@ -79,7 +79,6 @@ def load_file(path : str, key : str):
 				else:
 					print('Error format file\n')
 					exit(132)
-			print(_line)
 	error_args('no found key ' + key + ' in file', 131)
 
 def test_line(line : str):
